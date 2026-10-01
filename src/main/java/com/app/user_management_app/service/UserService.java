@@ -3,7 +3,6 @@ package com.app.user_management_app.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.app.user_management_app.dto.CreateUserRequest;
 import com.app.user_management_app.dto.UserResponse;
