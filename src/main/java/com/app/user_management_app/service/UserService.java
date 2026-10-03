@@ -3,6 +3,7 @@ package com.app.user_management_app.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.app.user_management_app.dto.CreateUserRequest;
 import com.app.user_management_app.dto.UserResponse;
@@ -13,6 +14,7 @@ import com.app.user_management_app.exception.ResourceNotFoundException;
 import com.app.user_management_app.repository.UserRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -34,6 +36,7 @@ public class UserService {
         return mapToUserResponse(user);
     }
 
+    @Transactional
     public UserResponse createUser(CreateUserRequest request) {
         Address address = new Address();
         address.setHomeAddress(request.homeAddress());
@@ -51,6 +54,7 @@ public class UserService {
         return mapToUserResponse(savedUser);
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));

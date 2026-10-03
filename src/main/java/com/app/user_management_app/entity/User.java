@@ -42,7 +42,7 @@ public class User {
     @Column(name = "birthdate", nullable = false)
     private LocalDate birthdate;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
 
     public void setAddress(Address address) {
