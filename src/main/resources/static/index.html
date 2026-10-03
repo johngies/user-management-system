@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Homepage</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div id="view-homepage">
+            <h1>Homepage</h1>
+            <button id="register-btn">Register new user</button>
+            <button id="display-btn">Display Users</button>
+        </div>
+        <div id="view-register">
+            <h1>Register new user</h1>
+            <div>
+                <label for="name-input">Name</label><br>
+                <input type="text" id="name-input">
+            </div>
+            <div>
+                <label for="surname-input">Surname</label><br>
+                <input type="text" id="surname-input">
+            </div>
+            <div>
+                <label for="gender-input">Gender</label><br>
+                <input type="text" id="gender-input">
+            </div>
+            <div>
+                <label for="birthdate-input">Birthdate</label><br>
+                <input type="text" id="birthdate-input">
+            </div>
+            <div>
+                <label for="home-address-input">Home address</label><br>
+                <input type="text" id="home-address-input">
+            </div>
+            <div>
+                <label for="work-address-input">Work address</label><br>
+                <input type="text" id="work-address-input">
+            </div><br>
+            <div>
+                <button id="submit-btn">Submit</button>
+                <button id="register-home-btn">Back to homepage</button>
+            </div>
+        </div>
+        <div id="view-display-users">
+            <div>
+                <h1>Users</h1>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th class="actions-col">Actions</th>
+                        </tr>
+                    </thead> 
+                    <tbody id="users-tbody">
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <button id="users-home-btn">Back to homepage</button>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="js/app.js"></script>
+    </body>  
+</html>

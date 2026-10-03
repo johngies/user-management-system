@@ -1,0 +1,42 @@
+/* =========================================
+   1. Base & Global Elements
+   ========================================= */
+button {
+    margin-right: 15px;
+}
+
+/* =========================================
+   2. Views Routing
+   ========================================= */
+#view-register,
+#view-display-users {
+    display: none;
+}
+
+/* =========================================
+   3. Register Form
+   ========================================= */
+.form-group {
+    margin-bottom: 12px;
+}
+
+/* =========================================
+   4. Users Table 
+   ========================================= */
+table {
+    width: 100%;
+    max-width: 700px;
+}
+
+th.actions-col, 
+td.actions-col {
+    text-align: center;
+}
+
+#users-tbody td:not(.actions-col) {
+    cursor: pointer;
+}
+
+#users-tbody tr:hover td:not(.actions-col) {
+    background-color: #e9ecef;
+}
