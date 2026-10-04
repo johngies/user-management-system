@@ -23,13 +23,18 @@ button {
 /* =========================================
    4. Users Table 
    ========================================= */
-table {
-    width: 100%;
+.table-container {
+    max-height: 700px;
     max-width: 700px;
+    overflow-y: auto;
+    margin-bottom: 15px;
 }
 
-th.actions-col, 
-td.actions-col {
+table {
+    width: 100%;
+}
+
+.actions-col { 
     text-align: center;
 }
 
@@ -39,4 +44,15 @@ td.actions-col {
 
 #users-tbody tr:hover td:not(.actions-col) {
     background-color: #e9ecef;
+}
+
+/* =========================================
+   5. Messages
+   ========================================= */
+.msg-success {
+    color: green;
+}
+
+.msg-error {
+    color: red;
 }
