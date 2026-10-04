@@ -39,12 +39,12 @@ $(document).ready(function() {
             data: JSON.stringify(userData),
             success: function(response) {
                 $('#register-error-msg').text('');
-                $('#register-success-msg').text('Επιτυχής εγγραφή!');
+                $('#register-success-msg').text('User registered successfully!');
                 $('#register-form')[0].reset();
             },
             error: function(xhr) {
                 const res = xhr.responseJSON;
-                let msg = "Κάτι πήγε στραβά!";
+                let msg = "Something went wrong!";
                 if (res && res.validationErrors) {
                     msg = Object.values(res.validationErrors).join("<br>");
                 } else if (res && res.message) {
@@ -69,7 +69,7 @@ $(document).ready(function() {
 
                 users.forEach(user => {
                     const row = `
-                        <tr>
+                        <tr data-id="${user.id}">
                             <td>${user.name}</td>
                             <td>${user.surname}</td>
                             <td class="actions-col">
@@ -81,28 +81,34 @@ $(document).ready(function() {
                 });
             },
             error: function(xhr) {
-                console.error("Σφάλμα ανάκτησης:", xhr.status);
+                console.error("Fetch error:", xhr.status);
             }
         });
     };
 
     $('#users-tbody').on('click', '.delete-btn', function() {
         const userId = $(this).data('id');
-        let msg = "Κάτι πήγε στραβά!";
+        let msg = "Something went wrong!";
         $.ajax({
             url: `${API_BASE_URL}/users/${userId}`,
             type: 'DELETE',
             success: function() {
                 loadUsers();
                 $('#users-error-msg').text('');
-                $('#users-success-msg').text('Ο χρήστης διεγράφη!');
+                $('#users-success-msg').text('User deleted successfully!');
             },
             error: function(xhr) {
-                console.error("Σφάλμα διαγραφής:", xhr.status);
+                console.error("Delete error:", xhr.status);
                 $('#users-success-msg').text('');
-                $('#users-error-msg').text("Σφάλμα διαγραφής!");
+                $('#users-error-msg').text("Error deleting user!");
             }
         });
+    });
+
+    // Details
+    $('#users-tbody').on('click', 'td:not(.actions-col)', function() {
+        const userId = $(this).closest('tr').data('id');
+        window.open(`details.html?id=${userId}`, '_blank');
     });
 
 }); 

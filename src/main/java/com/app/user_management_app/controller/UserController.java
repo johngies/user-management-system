@@ -3,6 +3,7 @@ package com.app.user_management_app.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.app.user_management_app.service.UserService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500"})
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
