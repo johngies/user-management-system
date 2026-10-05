@@ -17,6 +17,8 @@ $(document).ready(function() {
     $('#register-home-btn, #users-home-btn').click(function() {
         $('#view-register, #view-display-users').hide();
         $('#view-homepage').show();
+        $('.msg-success').text('');
+        $('.msg-error').text('');
     });
 
     // Register new user
@@ -87,6 +89,11 @@ $(document).ready(function() {
     };
 
     $('#users-tbody').on('click', '.delete-btn', function() {
+        const isConfirmed = confirm("Are you sure you want to delete this user?");
+
+        if (!isConfirmed) {
+            return;
+        }
         const userId = $(this).data('id');
         let msg = "Something went wrong!";
         $.ajax({

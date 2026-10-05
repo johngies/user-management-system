@@ -1,0 +1,30 @@
+services:
+# Database
+  mysql:
+    image: mysql:8.0
+    container_name: user-management-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: user_db
+      MYSQL_ROOT_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+# Spring Boot
+  app:
+    build: .
+    container_name: user-management-app
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+    - "8090:8090"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/user_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: admin
+
+volumes:
+  mysql_data:
