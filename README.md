@@ -35,14 +35,16 @@ The application strictly follows industry best practices and clean enterprise ar
   `@Transactional(readOnly = true)` applied at the service class level disables Hibernate dirty checking for high-performance reads, while write operations (`createUser`, `deleteUser`) use `@Transactional` to guarantee atomicity and automatic rollback upon errors.
 * **Centralized Exception Handling:**  
   Built with `@RestControllerAdvice` and `@ExceptionHandler`, transforming both domain errors (`ResourceNotFoundException`) and validation errors (`MethodArgumentNotValidException`) into consistent, structured JSON responses.
+* **Explicit Schema Initialization & Hibernate Validation:**  
+  The database schema, foreign keys, and cascade behaviors are explicitly defined in `schema.sql` (`spring.sql.init.mode=always`). Hibernate runs in `ddl-auto=validate` mode to strictly verify that JPA entity mappings align with the relational schema on startup, avoiding unintended auto-DDL mutations.
 * **Modern Frontend Architecture:**  
-  Lightweight Single Page Application (SPA) feel using asynchronous AJAX requests, dynamic DOM rendering, and **Event Delegation** to handle dynamically inserted elements.
+  Lightweight Single Page Application (SPA) feel using asynchronous AJAX requests, dynamic DOM rendering, jQuery UI Datepicker, and **Event Delegation** to handle dynamically inserted elements.
 
 ---
 
 ## ✨ Key Features
 
-- **User Registration:** Dynamic form with client-side and server-side validation (`@NotBlank`, `@Past`, `@Size`).
+- **User Registration:** Dynamic form with client-side and server-side validation (`@NotBlank`, `@Past`, `@Size`), featuring an interactive jQuery UI Datepicker with keyboard lock (`readonly`) for foolproof date selection.
 - **User Directory & Details:**
   - Lightweight summary table view with smooth scrolling.
   - Dedicated user profile details view (`details.html?id=:id`) fetching full demographic and address records.
@@ -63,7 +65,7 @@ The application strictly follows industry best practices and clean enterprise ar
 
 ### Frontend
 - **Markup & Styling:** HTML5, CSS3 (Modern Flexbox, custom scrollable tables, responsive layouts)
-- **Scripting:** JavaScript (ES6+), jQuery, AJAX
+- **Scripting & Widgets:** JavaScript (ES6+), jQuery 3.7, jQuery UI 1.14 (Datepicker), AJAX
 
 ### DevOps & Tooling
 - **Build Tool:** Maven (Multi-stage Docker build)
@@ -89,6 +91,7 @@ The application strictly follows industry best practices and clean enterprise ar
         │   └── service/               # Business logic & Transaction management
         └── resources/
             ├── application.properties # Application and database configurations
+            ├── schema.sql             # Relational DDL definitions & table initialization
             └── static/                # Frontend assets
                 ├── css/styles.css     # Responsive styles & layout
                 ├── js/                # Client logic (app.js, details.js)

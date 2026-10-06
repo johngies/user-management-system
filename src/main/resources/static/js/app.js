@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8090/api';
+const API_BASE_URL = '/api';
 
 $(document).ready(function() {
 
@@ -22,6 +22,14 @@ $(document).ready(function() {
     });
 
     // Register new user
+    $('#birthdate-input').datepicker({
+        dateFormat: 'yy-mm-dd',
+        maxDate: '-1d',
+        changeMonth: true,
+        changeYear: true,
+        yearRange: 'c-130:c+0'
+    });
+    
     $('#register-form').on('submit', function(e) {
         e.preventDefault();
 

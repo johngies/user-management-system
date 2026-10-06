@@ -1,5 +1,5 @@
 -- Users
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     surname VARCHAR(50) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE users (
 );
 
 -- User Addresses
-CREATE TABLE user_addresses (
+CREATE TABLE IF NOT EXISTS user_addresses (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id BIGINT UNIQUE NOT NULL,
     home_address VARCHAR(255),
