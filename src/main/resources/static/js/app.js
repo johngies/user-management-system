@@ -1,5 +1,3 @@
-const API_BASE_URL = '/api';
-
 $(document).ready(function() {
 
     function showView(viewId) {
@@ -45,7 +43,7 @@ $(document).ready(function() {
         };
 
         $.ajax({
-            url: `${API_BASE_URL}/users`,
+            url: '/api/users',
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(userData),
@@ -70,11 +68,11 @@ $(document).ready(function() {
     });
 
     // Display Users
-    const $tbody =$('#users-tbody');
+    const $tbody = $('#users-tbody');
 
     async function loadUsers() {
         $.ajax({
-            url: `${API_BASE_URL}/users`,
+            url: '/api/users',
             type: 'GET',
             success: function(users) {
                 $tbody.empty();
@@ -105,9 +103,9 @@ $(document).ready(function() {
             return;
         }
         const userId = $(this).data('id');
-        let msg = "Something went wrong!";
+        
         $.ajax({
-            url: `${API_BASE_URL}/users/${userId}`,
+            url: `/api/users/${userId}`,
             type: 'DELETE',
             success: function() {
                 loadUsers();
@@ -128,4 +126,4 @@ $(document).ready(function() {
         window.open(`details.html?id=${userId}`, '_blank');
     });
 
-}); 
+});

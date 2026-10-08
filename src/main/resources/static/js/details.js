@@ -1,5 +1,3 @@
-const API_BASE_URL = '/api';
-
 $(document).ready(function() {
     loadUserDetails();
 });
@@ -14,7 +12,7 @@ async function loadUserDetails() {
     }
 
     $.ajax({
-        url: `${API_BASE_URL}/users/${userId}`,
+        url: `/api/users/${userId}`,
         type: 'GET',
         success: function(user) {
             $('#detail-name').text(user.name);
