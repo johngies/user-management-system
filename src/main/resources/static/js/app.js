@@ -1,13 +1,14 @@
 $(document).ready(function() {
+    let currentUserId = null;
 
     function showView(viewId) {
-        $('#view-homepage, #view-display-users, #view-register').hide();
+        $('#view-homepage, #view-display-users, #view-register-edit').hide();
         $(viewId).show();
     }
 
     // Navigation
     $('#register-btn').click(function() {
-        showView('#view-register');
+        openForm(null);
     });
 
     $('#display-btn').click(function() {
@@ -17,11 +18,40 @@ $(document).ready(function() {
 
     $('#register-home-btn, #users-home-btn').click(function() {
         showView('#view-homepage');
-        $('.msg-success').text('');
-        $('.msg-error').text('');
+        $('.msg-success, .msg-error').text('');
     });
 
-    // Register new user
+    // Form Management
+    function openForm(userId = null) {
+        currentUserId = userId;
+        const isEdit = currentUserId !== null;
+        $('.msg-success, .msg-error').text('');
+        $('#register-edit-form')[0].reset();
+
+        if (isEdit) {
+            $('#register-edit-h1').text("Edit user");
+            $.ajax({
+                url: `/api/users/${userId}`,
+                type: 'GET',
+                success: function(user) {
+                    $('#name-input').val(user.name);
+                    $('#surname-input').val(user.surname);
+                    $('#gender-select').val(user.gender);
+                    $('#birthdate-input').val(user.birthdate);
+                    $('#home-address-input').val(user.homeAddress);
+                    $('#work-address-input').val(user.workAddress);
+                },
+                error: function(xhr) {
+                    console.error("Error fetching user details:", xhr.status);
+                }
+            });
+        } else {
+            $('#register-edit-h1').text("Register user");
+        }
+
+        showView('#view-register-edit');
+    }
+
     $('#birthdate-input').datepicker({
         dateFormat: 'yy-mm-dd',
         maxDate: '-1d',
@@ -29,8 +59,8 @@ $(document).ready(function() {
         changeYear: true,
         yearRange: 'c-130:c+0'
     });
-    
-    $('#register-form').on('submit', function(e) {
+
+    $('#register-edit-form').on('submit', function(e) {
         e.preventDefault();
 
         const userData = {
@@ -42,15 +72,27 @@ $(document).ready(function() {
             workAddress: $('#work-address-input').val().trim()
         };
 
+        const isEdit = currentUserId !== null;
+        const method = isEdit ? 'PUT' : 'POST';
+        const url = isEdit ? `/api/users/${currentUserId}` : '/api/users';
+
         $.ajax({
-            url: '/api/users',
-            type: 'POST',
+            url: url,
+            type: method,
             contentType: 'application/json',
             data: JSON.stringify(userData),
             success: function(response) {
-                $('#register-error-msg').text('');
-                $('#register-success-msg').text('User registered successfully!');
-                $('#register-form')[0].reset();
+                $('#register-edit-error-msg').text('');
+                $('#register-edit-form')[0].reset();
+
+                if (isEdit) {
+                    showView('#view-display-users');
+                    loadUsers();
+                    $('#users-error-msg').text('');
+                    $('#users-success-msg').text('User edited successfully!');
+                } else {
+                    $('#register-edit-success-msg').text('User registered successfully!');
+                }
             },
             error: function(xhr) {
                 const res = xhr.responseJSON;
@@ -60,17 +102,16 @@ $(document).ready(function() {
                 } else if (res && res.message) {
                     msg = res.message;
                 }
-                $('#register-success-msg').text('');
-                $('#register-error-msg').html(msg);
+                $('#register-edit-success-msg').text('');
+                $('#register-edit-error-msg').html(msg);
             }
         });
-
     });
 
     // Display Users
     const $tbody = $('#users-tbody');
 
-    async function loadUsers() {
+    function loadUsers() {
         $.ajax({
             url: '/api/users',
             type: 'GET',
@@ -84,6 +125,7 @@ $(document).ready(function() {
                             <td>${user.surname}</td>
                             <td class="actions-col">
                                 <button class="delete-btn" data-id="${user.id}">Delete</button>
+                                <button class="edit-btn" data-id="${user.id}">Edit</button>
                             </td>
                         </tr>
                     `;
@@ -94,16 +136,20 @@ $(document).ready(function() {
                 console.error("Fetch error:", xhr.status);
             }
         });
-    };
+    }
+
+    $('#users-tbody').on('click', '.edit-btn', function() {
+        const id = $(this).data('id');
+        openForm(id);
+    });
 
     $('#users-tbody').on('click', '.delete-btn', function() {
         const isConfirmed = confirm("Are you sure you want to delete this user?");
-
         if (!isConfirmed) {
             return;
         }
+
         const userId = $(this).data('id');
-        
         $.ajax({
             url: `/api/users/${userId}`,
             type: 'DELETE',
@@ -125,5 +171,4 @@ $(document).ready(function() {
         const userId = $(this).closest('tr').data('id');
         window.open(`details.html?id=${userId}`, '_blank');
     });
-
 });

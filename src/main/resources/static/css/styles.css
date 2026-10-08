@@ -8,7 +8,7 @@ button {
 /* =========================================
    2. Views Routing
    ========================================= */
-#view-register,
+#view-register-edit,
 #view-display-users {
     display: none;
 }

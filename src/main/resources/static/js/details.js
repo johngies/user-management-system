@@ -2,7 +2,7 @@ $(document).ready(function() {
     loadUserDetails();
 });
 
-async function loadUserDetails() {
+function loadUserDetails() {
     const params = new URLSearchParams(window.location.search);
     const userId = params.get('id');
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.app.user_management_app.dto.CreateUserRequest;
+import com.app.user_management_app.dto.UpdateUserRequest;
 import com.app.user_management_app.dto.UserResponse;
 import com.app.user_management_app.dto.UserSummaryResponse;
 import com.app.user_management_app.entity.Address;
@@ -60,6 +61,27 @@ public class UserService {
             .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
 
         userRepository.delete(user);
+    }
+
+    @Transactional
+    public UserResponse updateUser(Long id, UpdateUserRequest request) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+
+        Address address = user.getAddress();
+        if (address == null) {
+            address = new Address();
+        }
+        address.setHomeAddress(request.homeAddress());
+        address.setWorkAddress(request.workAddress());
+
+        user.setName(request.name());
+        user.setSurname(request.surname());
+        user.setGender(request.gender());
+        user.setBirthdate(request.birthdate());
+        user.setAddress(address);
+
+        return mapToUserResponse(user);
     }
 
     // Mappers
