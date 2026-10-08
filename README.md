@@ -28,11 +28,11 @@ The application strictly follows industry best practices and clean enterprise ar
 * **Layered 3-Tier Architecture:**  
   Clean separation of concerns: `Controller` (HTTP/REST) $\rightarrow$ `Service` (Business Logic & Transactions) $\rightarrow$ `Repository` (Data Access).
 * **DTO Pattern (Java 21 Records):**  
-  Entities (`User`, `Address`) are completely decoupled from external API contracts. DTOs are implemented as immutable Java `record` types to prevent over-fetching, circular references (Jackson infinite recursion), and data leakage.
+  Entities (`User`, `Address`) are completely decoupled from external API contracts. DTOs are implemented as immutable Java `record` types (`CreateUserRequest`, `UpdateUserRequest`, `UserResponse`, `UserSummaryResponse`) to prevent over-fetching, circular references (Jackson infinite recursion), and data leakage.
 * **JPA Bidirectional Relationship & Cascading:**  
   Bidirectional `1-to-1` relationship between `User` and `Address` with `CascadeType.ALL` and `orphanRemoval = true`, ensuring automatic cleanup and data integrity at the database layer.
 * **Declarative Transaction Management:**  
-  `@Transactional(readOnly = true)` applied at the service class level disables Hibernate dirty checking for high-performance reads, while write operations (`createUser`, `deleteUser`) use `@Transactional` to guarantee atomicity and automatic rollback upon errors.
+  `@Transactional(readOnly = true)` applied at the service class level disables Hibernate dirty checking for high-performance reads, while write operations (`createUser`, `updateUser`, `deleteUser`) use `@Transactional` to guarantee atomicity and automatic rollback upon errors.
 * **Centralized Exception Handling:**  
   Built with `@RestControllerAdvice` and `@ExceptionHandler`, transforming both domain errors (`ResourceNotFoundException`) and validation errors (`MethodArgumentNotValidException`) into consistent, structured JSON responses.
 * **Explicit Schema Initialization & Hibernate Validation:**  
@@ -45,6 +45,7 @@ The application strictly follows industry best practices and clean enterprise ar
 ## ✨ Key Features
 
 - **User Registration:** Dynamic form with client-side and server-side validation (`@NotBlank`, `@Past`, `@Size`), featuring an interactive jQuery UI Datepicker with keyboard lock (`readonly`) for foolproof date selection.
+- **User Editing & Update:** Unified dynamic form supporting seamless inline editing of existing users via `PUT /api/users/{id}` with pre-populated demographics and addresses.
 - **User Directory & Details:**
   - Lightweight summary table view with smooth scrolling.
   - Dedicated user profile details view (`details.html?id=:id`) fetching full demographic and address records.
@@ -110,6 +111,7 @@ The application strictly follows industry best practices and clean enterprise ar
 | `GET` | `/api/users` | Retrieve lightweight summaries of all users | `200 OK` |
 | `GET` | `/api/users/{id}` | Retrieve detailed user profile including addresses | `200 OK` / `404 Not Found` |
 | `POST` | `/api/users` | Register a new user and linked address | `201 Created` / `400 Bad Request` |
+| `PUT` | `/api/users/{id}` | Update existing user profile and addresses | `200 OK` / `400 Bad Request` / `404 Not Found` |
 | `DELETE` | `/api/users/{id}` | Delete user and cascade delete address | `204 No Content` / `404 Not Found` |
 
 ### Sample Payloads
@@ -123,6 +125,18 @@ The application strictly follows industry best practices and clean enterprise ar
   "birthdate": "1995-05-15",
   "homeAddress": "42 Maple Street, Springfield",
   "workAddress": "100 Tech Park, Springfield"
+}
+```
+
+#### `PUT /api/users/{id}` (Request Body)
+```json
+{
+  "name": "Jane",
+  "surname": "Smith",
+  "gender": "FEMALE",
+  "birthdate": "1995-05-15",
+  "homeAddress": "88 Ocean Drive, Springfield",
+  "workAddress": "200 Enterprise Tower, Springfield"
 }
 ```
 
