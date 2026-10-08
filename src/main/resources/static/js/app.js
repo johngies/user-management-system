@@ -2,21 +2,23 @@ const API_BASE_URL = '/api';
 
 $(document).ready(function() {
 
+    function showView(viewId) {
+        $('#view-homepage, #view-display-users, #view-register').hide();
+        $(viewId).show();
+    }
+
     // Navigation
-    $('#register-btn').click( function() {
-        $('#view-homepage').hide();
-        $('#view-register').show();
+    $('#register-btn').click(function() {
+        showView('#view-register');
     });
 
     $('#display-btn').click(function() {
-        $('#view-homepage').hide();
-        $('#view-display-users').show();
+        showView('#view-display-users');
         loadUsers();
     });
 
     $('#register-home-btn, #users-home-btn').click(function() {
-        $('#view-register, #view-display-users').hide();
-        $('#view-homepage').show();
+        showView('#view-homepage');
         $('.msg-success').text('');
         $('.msg-error').text('');
     });
