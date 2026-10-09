@@ -11,7 +11,7 @@ $(document).ready(function() {
         openForm(null);
     });
 
-    $('#display-btn').click(function() {
+    $('#display-btn, #cancel-btn').click(function() {
         showView('#view-display-users');
         loadUsers();
     });
@@ -30,6 +30,8 @@ $(document).ready(function() {
 
         if (isEdit) {
             $('#register-edit-h1').text("Edit user");
+            $('#cancel-btn').show();
+
             $.ajax({
                 url: `/api/users/${userId}`,
                 type: 'GET',
@@ -47,6 +49,7 @@ $(document).ready(function() {
             });
         } else {
             $('#register-edit-h1').text("Register user");
+            $('#cancel-btn').hide(); 
         }
 
         showView('#view-register-edit');
