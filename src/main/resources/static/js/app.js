@@ -55,6 +55,7 @@ $(document).ready(function() {
         showView('#view-register-edit');
     }
 
+    //Register and Edit User
     $('#birthdate-input').datepicker({
         dateFormat: 'yy-mm-dd',
         maxDate: '-1d',
